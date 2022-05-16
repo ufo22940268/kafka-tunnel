@@ -75,7 +75,7 @@ def print_instances(instances):
 
 def connect_ssh_tunnel(jump_host,instances):
     click.echo(' * connecting to jump host ' + jump_host)
-    opts = ['-M', '0', '-f', '-N']
+    opts = ['-M', '0', '-f']
     for i in instances:
         opts += ['-L','{ip}:{port}:{ip}:{port}'.format(ip=i.ip,port=i.port)]
     subprocess.call(['autossh'] + opts + [jump_host])
