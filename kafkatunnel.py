@@ -44,10 +44,10 @@ def manual(jump_host,zookeeper_ips, kafka_ips, schemaregistry_ips, zookeeper_por
 
 
 def connect(jump_host,instances):
+    remove_local_interfaces(instances)
     print_instances(instances)
     add_local_interfaces(instances)
     connect_ssh_tunnel(jump_host,instances)
-    remove_local_interfaces(instances)
 
 def add_local_interfaces(instances):
     click.echo(' * adding interface, user password might be needed')
@@ -75,7 +75,7 @@ def print_instances(instances):
 
 def connect_ssh_tunnel(jump_host,instances):
     click.echo(' * connecting to jump host ' + jump_host)
-    opts = ['-M', '0', '-f']
+    opts = ['-M', '0', '-fN']
     for i in instances:
         opts += ['-L','{ip}:{port}:{ip}:{port}'.format(ip=i.ip,port=i.port)]
     subprocess.call(['autossh'] + opts + [jump_host])
